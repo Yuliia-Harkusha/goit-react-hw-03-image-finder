@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Gallery } from './ImageGallery.styled';
 
-export const ImageGallery = ({ items, openModal }) => {
+export const ImageGallery = ({ items, onClick }) => {
   return (
     <Gallery>
       {items.length > 0 &&
@@ -12,7 +12,7 @@ export const ImageGallery = ({ items, openModal }) => {
             smallImage={webformatURL}
             largeImage={largeImageURL}
             description={tags}
-            openModal={openModal}
+            openModal={onClick}
           />
         ))}
     </Gallery>

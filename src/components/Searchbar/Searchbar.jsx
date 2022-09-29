@@ -1,64 +1,87 @@
-import { Component } from 'react';
+// import { Component } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import { Header, Form, Input, SearchButton } from './Searchbar.styled';
 
-export class Searchbar extends Component {
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
+export const Searchbar = ({ onSubmit }) => {
+  return (
+    <Header>
+      <Form onSubmit={onSubmit}>
+        <SearchButton type="submit">
+          <FaSearch size={14} />
+        </SearchButton>
+        <Input
+          type="text"
+          name="query"
+          autoComplete="off"
+          placeholder="Search images and photos"
+        />
+      </Form>
+    </Header>
+  );
+};
 
-  state = {
-    query: '',
-  };
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+};
 
-  handleChange = e => {
-    this.setState({ query: e.target.value });
-  };
+// export class Searchbar extends Component {
+//   static propTypes = {
+//     onSubmit: PropTypes.func.isRequired,
+//   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { query } = this.state;
-    const { onSubmit } = this.props;
+//   state = {
+//     query: '',
+//   };
 
-    if (query.trim() === '') {
-      toast.warning('Enter a search request', {
-        position: toast.POSITION.TOP_RIGHT,
-        theme: 'colored',
-        autoClose: 3000,
-      });
-      return;
-    }
+//   handleChange = e => {
+//     this.setState({ query: e.target.value });
+//   };
 
-    onSubmit({ ...this.state });
-    this.setState({
-      query: '',
-    });
-  };
+//   handleSubmit = e => {
+//     e.preventDefault();
+//     const { query } = this.state;
+//     const { onSubmit } = this.props;
 
-  render() {
-    const { query } = this.state;
-    const { handleChange, handleSubmit } = this;
+//     this.props.onSubmit({ ...this.state });
+//     this.setState({ query: '' });
 
-    return (
-      <Header>
-        <Form onSubmit={handleSubmit}>
-          <SearchButton type="submit" onClick={handleSubmit}>
-            <FaSearch size={14} />
-          </SearchButton>
+//     if (query.trim() === '') {
+//       toast.warning('Enter a search request', {
+//         position: toast.POSITION.TOP_RIGHT,
+//         theme: 'colored',
+//         autoClose: 3000,
+//       });
+//       return;
+//     }
 
-          <Input
-            value={query}
-            onChange={handleChange}
-            type="text"
-            autoFocus
-            autoComplete="off"
-            placeholder="Search images and photos"
-          />
-        </Form>
-      </Header>
-    );
-  }
-}
+//     onSubmit({ ...this.state });
+//     this.setState({
+//       query: '',
+//     });
+//   };
+
+//   render() {
+//     const { query } = this.state;
+//     const { handleChange, handleSubmit } = this;
+
+//     return (
+//       <Header>
+//         <Form onSubmit={handleSubmit}>
+//           <SearchButton type="submit" onClick={handleSubmit}>
+//             <FaSearch size={14} />
+//           </SearchButton>
+
+//           <Input
+//             value={query}
+//             onChange={handleChange}
+//             type="text"
+//             autoFocus
+//             autoComplete="off"
+//             placeholder="Search images and photos"
+//           />
+//         </Form>
+//       </Header>
+//     );
+//   }
+// }

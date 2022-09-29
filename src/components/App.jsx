@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { getPhotos } from 'services/api';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
@@ -20,27 +22,52 @@ export class App extends Component {
 
   componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
-    if (query && prevState.query !== query) {
-      this.onSearch();
-    }
-
-    if (query && prevState.query !== query) {
-      getPhotos(query, page).then(response =>
-        this.setState({
-          items: response,
-          page: page + 1,
-          loading: false,
-        })
-      );
+    if ((query && prevState.query !== query) || page > prevState.page) {
+      this.fetchImages(query, page);
     }
   }
 
-  onSearch = query => {
+  async fetchImages() {
+    const { query, page } = this.state;
     this.setState({
-      query,
-      page: 1,
       loading: true,
     });
+
+    try {
+      const data = await getPhotos(query, page);
+      this.setState(({ items }) => {
+        return {
+          items: [...items, ...data.hits],
+        };
+      });
+    } catch (error) {
+      this.setState({
+        error,
+      });
+    } finally {
+      this.setState({
+        loading: false,
+      });
+    }
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const { value, name } = e.target.elements.query;
+    if (value.trim() === '') {
+      toast.warning('Enter a search request', {
+        theme: 'colored',
+        autoClose: 3000,
+      });
+      return;
+    }
+    if (value.length !== 0 && value !== this.state.query) {
+      this.setState({
+        [name]: value,
+        items: [],
+        page: 1,
+      });
+    }
   };
 
   loadMore = () => {
@@ -51,9 +78,10 @@ export class App extends Component {
     });
   };
 
-  openModal = () => {
+  openModal = modalContent => {
     this.setState({
       modalOpen: true,
+      modalContent: modalContent.largeImageURL,
     });
   };
 
@@ -65,18 +93,22 @@ export class App extends Component {
   };
 
   render() {
-    const { items, loading, error, modalOpen } = this.state;
-    const isPhotos = Boolean(items.length);
-    const { onSearch, loadMore, openModal, closeModal } = this;
+    const { items, loading, error, modalOpen, modalContent } = this.state;
+    const { handleSubmit, loadMore, openModal, closeModal } = this;
+    const isPhotos = Boolean(items.length > 0);
+
     return (
       <>
-        <Searchbar onSubmit={onSearch} />
+        <Searchbar onSubmit={handleSubmit} />
         {loading && <Loader />}
         {error && <p>Something went wrong...</p>}
-        {modalOpen && <Modal onClose={closeModal}></Modal>}
         {isPhotos && <ImageGallery items={items} onClick={openModal} />}
         {isPhotos && <Button onClick={loadMore} />}
-        {modalOpen && <Modal onClose={closeModal}></Modal>}
+        {modalOpen && (
+          <Modal onClose={closeModal}>
+            <img src={modalContent} alt="" />
+          </Modal>
+        )}
         <ToastContainer />
       </>
     );

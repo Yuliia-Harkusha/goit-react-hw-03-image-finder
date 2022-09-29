@@ -13,11 +13,11 @@ export class Modal extends Component {
     document.removeEventListener('keydown', this.closeModal);
   }
 
-  // closeModal = ({ target, currentTarget, code }) => {
-  //   if (target === currentTarget || code === 'Escape') {
-  //     this.props.onClose;
-  //   }
-  // };
+  closeModal = ({ target, currentTarget, code }) => {
+    if (target === currentTarget || code === 'Escape') {
+      this.props.onClose();
+    }
+  };
 
   render() {
     const { closeModal } = this;
@@ -25,10 +25,11 @@ export class Modal extends Component {
     return createPortal(
       <Overlay onClick={closeModal}>
         <ModalWindow>
-          <CloseButton onClick={closeModal}>X</CloseButton>
+          <img src="" alt="" />
           {children}
         </ModalWindow>
-      </Overlay>
+      </Overlay>,
+      modalRoot
     );
   }
 }

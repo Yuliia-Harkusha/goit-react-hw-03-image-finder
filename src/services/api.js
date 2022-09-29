@@ -6,8 +6,10 @@ const FILTER = '&image_type=photo&orientation=horizontal&per_page=12';
 
 export const getPhotos = async (query, page) => {
   try {
-    const { data } = await axios.get(`${URL}?key=${KEY}&q={query}${FILTER}`);
-    return data.hits;
+    const response = await axios.get(
+      `${URL}?key=${KEY}&q=${query}&page=${page}${FILTER}`
+    );
+    return response.data;
   } catch (error) {
     console.error(error);
   }
