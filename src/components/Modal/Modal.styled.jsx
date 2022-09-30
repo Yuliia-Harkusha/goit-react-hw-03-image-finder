@@ -1,24 +1,25 @@
 import styled from 'styled-components';
 
 export const Overlay = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #9a8a8a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1200;
 `;
 
 export const ModalWindow = styled.div`
-  max-width: 50%;
-  border-radius: 10px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 24px);
+  border-radius: 5px;
   position: relative;
   padding: 15px;
-  background-color: #fff;
+  /* background-color: #fff; */
 `;
 
 export const CloseButton = styled.span`
@@ -27,10 +28,10 @@ export const CloseButton = styled.span`
   font-weight: bold;
   font-size: 16px;
   position: absolute;
-  top: 5px;
-  right: 5px;
-  padding: 5px;
-  border-radius: 5px;
+  top: 20px;
+  right: 20px;
+  padding: 8px;
+  border-radius: 3px;
   background-color: #fff;
   cursor: pointer;
 `;

@@ -21,11 +21,12 @@ export class Modal extends Component {
 
   render() {
     const { closeModal } = this;
-    const { children } = this.props;
+    const { children, content } = this.props;
     return createPortal(
       <Overlay onClick={closeModal}>
         <ModalWindow>
-          <img src="" alt="" />
+          <img src={content} alt="" loading="lazy" />
+          <CloseButton onClick={closeModal}>X</CloseButton>
           {children}
         </ModalWindow>
       </Overlay>,

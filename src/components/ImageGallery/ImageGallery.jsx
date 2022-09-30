@@ -12,7 +12,7 @@ export const ImageGallery = ({ items, onClick }) => {
             smallImage={webformatURL}
             largeImage={largeImageURL}
             description={tags}
-            openModal={onClick}
+            onClick={onClick}
           />
         ))}
     </Gallery>

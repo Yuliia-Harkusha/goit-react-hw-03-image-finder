@@ -5,11 +5,11 @@ export const ImageGalleryItem = ({
   smallImage,
   largeImage,
   description,
-  openModal,
+  onClick,
 }) => {
   return (
-    <GalleryItem onClick={() => openModal(largeImage)}>
-      <Image src={smallImage} alt={description} />
+    <GalleryItem onClick={onClick}>
+      <Image src={smallImage} alt={description} data-large={largeImage} />
     </GalleryItem>
   );
 };

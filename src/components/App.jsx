@@ -8,6 +8,7 @@ import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { Modal } from './Modal/Modal';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Text } from './Text';
 
 export class App extends Component {
   state = {
@@ -15,6 +16,7 @@ export class App extends Component {
     page: 1,
     items: [],
     loading: false,
+    isVisible: false,
     error: null,
     modalOpen: false,
     modalContent: '',
@@ -38,6 +40,7 @@ export class App extends Component {
       this.setState(({ items }) => {
         return {
           items: [...items, ...data.hits],
+          isVisible: page < Math.ceil(data.total / 12),
         };
       });
     } catch (error) {
@@ -78,10 +81,11 @@ export class App extends Component {
     });
   };
 
-  openModal = modalContent => {
+  openModal = e => {
+    const modalContent = e.target.dataset.large;
     this.setState({
       modalOpen: true,
-      modalContent: modalContent.largeImageURL,
+      modalContent: modalContent,
     });
   };
 
@@ -93,7 +97,8 @@ export class App extends Component {
   };
 
   render() {
-    const { items, loading, error, modalOpen, modalContent } = this.state;
+    const { items, loading, error, modalOpen, modalContent, isVisible } =
+      this.state;
     const { handleSubmit, loadMore, openModal, closeModal } = this;
     const isPhotos = Boolean(items.length > 0);
 
@@ -101,11 +106,16 @@ export class App extends Component {
       <>
         <Searchbar onSubmit={handleSubmit} />
         {loading && <Loader />}
-        {error && <p>Something went wrong...</p>}
-        {isPhotos && <ImageGallery items={items} onClick={openModal} />}
-        {isPhotos && <Button onClick={loadMore} />}
+        {error && <Text>Something went wrong...</Text>}
+
+        {isPhotos ? (
+          <ImageGallery items={items} onClick={openModal} />
+        ) : (
+          <Text>Sorry, there are no images</Text>
+        )}
+        {isVisible && !loading && <Button onClick={loadMore} />}
         {modalOpen && (
-          <Modal onClose={closeModal}>
+          <Modal onClose={closeModal} content={modalContent}>
             <img src={modalContent} alt="" />
           </Modal>
         )}

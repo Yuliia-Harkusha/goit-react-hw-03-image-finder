@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -10,9 +10,17 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
+const Animation = keyframes`
+  0% { transform: rotate(0deg); }
+ 100% { transform: rotate(360deg);}
+`;
+
 export const LoaderIcon = styled.span`
-  margin-top: 30px;
+  margin-top: 50px;
   transform: rotate(360deg);
   transition: transform 250ms linear infinite;
-  color: #3a3af8;
+  color: #1f53ff;
+  animation-name: ${Animation};
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
 `;
